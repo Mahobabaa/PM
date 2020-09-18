@@ -102,7 +102,7 @@ MonoBehaviour:
   m_MinSize: {x: 911, y: 442}
   m_MaxSize: {x: 22006, y: 10021}
   vertical: 0
-  controlID: 55
+  controlID: 49
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_MinSize: {x: 201, y: 442}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 98
+  controlID: 101
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -532,7 +532,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: b8360000
     m_LastClickedID: 14008
-    m_ExpandedIDs: 000000000a340000b6350000
+    m_ExpandedIDs: 000000008c34000098340000c8340000ec350000ee350000f0350000f2350000f4350000f6350000f8350000fa350000fc350000fe3500000036000002360000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -560,7 +560,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: e265fffffaa6ffffffffffff000000000a340000c03500005a36000012370000583700005c370000343800003e3800004a3800006238000066380000663900007a39000090450000
+    m_ExpandedIDs: ffffffff000000008c34000098340000c8340000ee350000f2350000f4350000f6350000f8350000fa350000fc350000fe35000000360000023600000e370000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -685,7 +685,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: cea7ffff6cfbffff
+      m_ExpandedIDs: 6cfbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -880,7 +880,7 @@ MonoBehaviour:
     m_VAllowExceedBaseRangeMax: 1
     m_ScaleWithWindow: 0
     m_HSlider: 0
-    m_VSlider: 0
+    m_VSlider: 1
     m_IgnoreScrollWheelUntilClicked: 0
     m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
@@ -893,7 +893,7 @@ MonoBehaviour:
       y: 21
       width: 1209
       height: 401
-    m_Scale: {x: 0.7832031, y: 0.7832031}
+    m_Scale: {x: 0.82421875, y: 0.82421875}
     m_Translation: {x: 604.5, y: 200.5}
     m_MarginLeft: 0
     m_MarginRight: 0
@@ -901,12 +901,12 @@ MonoBehaviour:
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -771.83044
-      y: -256
-      width: 1543.6609
-      height: 512
+      x: -733.4218
+      y: -243.26067
+      width: 1466.8436
+      height: 486.52133
     m_MinimalGUI: 1
-  m_defaultScale: 0.7832031
+  m_defaultScale: 0.82421875
   m_LastWindowPixelSize: {x: 1209, y: 422}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
