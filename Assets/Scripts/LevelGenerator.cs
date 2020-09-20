@@ -4,137 +4,368 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject[] gameObjects;
-    private GameObject[,] topLeft = new GameObject[10, 11];
-    private GameObject[,] bottomLeft = new GameObject[10, 11];
-    private GameObject[,] topRight = new GameObject[10, 11];
-    private GameObject[,] bottomRight = new GameObject[10, 11];
-    private GameObject[] Q = new GameObject[1];
-    private int rows, columns;
-
-    private void Awake()
+    public Sprite[] MySprites;
+    public GameObject ThisMap;
+    int[,] LevelMap =
     {
-        rows = topLeft.GetLength(0);
-        columns = topLeft.GetLength(1);
-        EmptyGameObject();
-        Quadrants();
-    }
+        {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
+        {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
+        {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
+        {2,6,4,0,0,4,5,4,0,0,0,4,5,4},
+        {2,5,3,4,4,3,5,3,4,4,4,3,5,3},
+        {2,5,5,5,5,5,8,5,5,5,5,5,5,5},
+        {2,5,3,4,4,3,5,3,3,5,3,4,4,4},
+        {2,5,3,4,4,3,5,4,4,5,3,4,4,3},
+        {2,5,5,5,5,5,5,4,4,5,5,5,5,4},
+        {1,2,2,2,2,1,5,4,3,4,4,3,0,4},
+        {0,0,0,0,0,2,5,4,3,4,4,3,0,3},
+        {0,0,0,0,0,2,5,4,4,0,0,0,0,0},
+        {0,0,0,0,0,2,5,4,4,0,3,4,4,0},
+        {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
+        {0,0,0,0,0,0,5,0,0,0,4,0,0,0},             
+    };
+
+  public static  int[,] ToTalMap = new int[29, 28];
     // Start is called before the first frame update
-    void Start()
+    void Start()//地图初始化
     {
-        int[,] levelMap =
- {
- {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
- {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
- {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
- {2,6,4,0,0,4,5,4,0,0,0,4,5,4},
- {2,5,3,4,4,3,5,3,4,4,4,3,5,3},
- {2,5,5,5,5,5,5,5,5,5,5,5,5,5},
- {2,5,3,4,4,3,5,3,3,5,3,4,4,4},
- {2,5,3,4,4,3,5,4,4,5,3,4,4,3},
- {2,5,5,5,5,5,5,4,4,5,5,5,5,4},
- {1,2,2,2,2,1,5,4,3,4,4,3,0,4},
- {0,0,0,0,0,2,5,4,3,4,4,3,0,3},
- {0,0,0,0,0,2,5,4,4,0,0,0,0,0},
- {0,0,0,0,0,2,5,4,4,0,3,4,4,0},
- {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
- {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
- };
+        int[,] LevelMap1=new int[15,14];
+        for (int i = 0; i < 15; i++)
+        {
+            for (int j = 0; j < 14; j++)
+            {
+                LevelMap1[i,j] = LevelMap[ i,13-j];
+            }
+        }
+        int[,] LevelMap2 = new int[15, 28];
+        for (int i = 0; i < 15; i++)
+        {
+            for (int j = 0; j < 28; j++)
+            {
+                if (j < 14)
+                    LevelMap2[i, j] = LevelMap[i, j];
+                else
+                {
+                    LevelMap2[i, j] = LevelMap1[i, j-14];
+                }
+            }
+        }
+        int[,] LevelMap3 = new int[14, 28];
+        for (int i = 0; i < 14; i++)
+        {
+            for (int j = 0; j < 28; j++)
+            {
+                LevelMap3[i, j] = LevelMap2[13-i, j];
+            }
+        }
+       
 
+        for (int i = 0; i < 29; i++)
+        {
+            for (int j = 0; j < 28; j++)
+            {
+                if (i < 15)
+                    ToTalMap[i, j] = LevelMap2[i, j];
+                else
+                {
+                    ToTalMap[i, j] = LevelMap3[i-15 , j];
+                }
+            }
+        }
+        for (int i = 0; i < 29; i++)
+        {
+            for (int j = 0; j <28; j++)
+            {
+                bool BTrue = false;
+                GameObject gameObject1 = GameObject.Instantiate(ThisMap);
+                gameObject1.transform.SetParent(this.transform);
+                if (ToTalMap[i, j] == 0)
+                {
+
+                }
+                else
+                {
+                    gameObject1.GetComponent<SpriteRenderer>().sprite = MySprites[ToTalMap[i, j] - 1];
+                }
+               
+                gameObject1.transform.position = new Vector3(-14*0.45f*0.7f+j * 0.45f*0.7f, 14 * 0.45f*0.7f - i * 0.45f*0.7f, 0);
+                if (ToTalMap[i, j] == 1)
+                {
+                    if(i-1>=0)
+                    {
+                        if (ToTalMap[i-1, j] == 2|| ToTalMap[i - 1, j] == 1)
+                        {
+                            if (j - 1 >= 0)
+                            {
+                                if (ToTalMap[i, j - 1] == 2 || ToTalMap[i , j-1] == 1)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 180);
+
+                                }
+                            }
+                            if (j + 1 <= 27)
+                            {
+                                if (ToTalMap[i, j + 1] == 2 || ToTalMap[i , j+1] == 1)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 90);
+                                  
+                                }
+                            }
+                            
+                           
+                        }
+                    }
+                    if (i + 1 <= 28)
+                    {
+                        if (ToTalMap[i + 1, j] == 2 || ToTalMap[i + 1, j] == 1)
+                        {
+                            if (j - 1 >= 0)
+                            {
+                                if (ToTalMap[i, j - 1] == 2 || ToTalMap[i, j-1] == 1)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 270);
+                                  
+                                }
+                            }
+                            if (j + 1 <= 27)
+                            {
+                                if (ToTalMap[i, j + 1] == 2 || ToTalMap[i , j+1] == 1)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 0);
+                                  
+                                }
+                            }
+
+                        }
+                    }
+                }
+                if (ToTalMap[i, j] == 2)
+                {
+                    if (i - 1 >= 0)
+                    {
+                        if (ToTalMap[i - 1, j] == 2|| ToTalMap[i - 1, j] == 1|| ToTalMap[i - 1, j] == 7)
+                        {
+                          
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 90);
+                          
+                           
+
+
+                        }
+                    }
+                    if (j - 1 >= 0)
+                    {
+                        if (ToTalMap[i, j-1] == 2 || ToTalMap[i, j-1] == 1|| ToTalMap[i, j - 1] ==7)
+                        {
+                           
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 0);
+                          
+
+
+
+                        }
+                    }
+                }
+                if (ToTalMap[i, j] == 3)
+                {
+                    if (i - 1 >= 0)
+                    {
+                        if (ToTalMap[i - 1, j] == 4|| ToTalMap[i - 1, j] ==3)
+                        {
+                            if (j - 1 >= 0)
+                            {
+                                if (ToTalMap[i, j - 1] == 4 || ToTalMap[i, j-1] == 3)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 180);
+                                    if (ToTalMap[i - 1, j] == 4 && ToTalMap[i, j - 1] == 4)
+                                    {
+                                        BTrue = true;
+                                    }
+                                }
+                            }
+                            if (j + 1 <= 27)
+                            {
+                                if (ToTalMap[i, j + 1] == 4 || ToTalMap[i , j+1] == 3)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 90);
+                                    if (ToTalMap[i - 1, j] == 4 && ToTalMap[i, j+ 1] == 4)
+                                    {
+                                        BTrue = true;
+                                    }
+
+                                }
+                            }
+                           
+
+
+                        }
+                    }
+                    if (j + 1 <= 27 && j - 1 >= 0 && i - 1 >= 0 && i + 1 <= 28)
+                    {
+                        if (ToTalMap[i - 1, j] == 4 || ToTalMap[i - 1, j] == 3)
+                        {
+                            if (ToTalMap[i + 1, j] == 4 || ToTalMap[i + 1, j] == 3)
+                            {
+                                if (ToTalMap[i, j - 1] == 4 || ToTalMap[i, j - 1] == 3)
+                                {
+                                    if (ToTalMap[i, j + 1] == 4 || ToTalMap[i, j + 1] == 3)
+                                    {
+                                        if (ToTalMap[i - 1, j] == 4&& ToTalMap[i, j - 1] == 4)
+                                        {
+                                            if (ToTalMap[i - 2, j] == 4 && ToTalMap[i, j - 2] == 4)
+                                            {
+                                                gameObject1.transform.localEulerAngles = new Vector3(0, 0, 180);
+                                                BTrue = true;
+                                            }
+                                        }
+                                         if (ToTalMap[i - 1, j] == 4 && ToTalMap[i, j + 1] == 4)
+                                        {
+                                            if (ToTalMap[i - 2, j] == 4 && ToTalMap[i, j + 2] == 4)
+                                            {
+                                                gameObject1.transform.localEulerAngles = new Vector3(0, 0, 90);
+                                                BTrue = true;
+                                            }
+                                        }
+                                         if (ToTalMap[i + 1, j] == 4 && ToTalMap[i, j + 1] == 4)
+                                        {
+                                            if (ToTalMap[i + 2, j] == 4 && ToTalMap[i, j + 2] == 4)
+                                            {
+                                                gameObject1.transform.localEulerAngles = new Vector3(0, 0, 0);
+                                                BTrue = true;
+                                            }
+                                        }
+                                         if (ToTalMap[i + 1, j] == 4 && ToTalMap[i, j - 1] == 4)
+                                        {
+                                            if (ToTalMap[i + 2, j] == 4 && ToTalMap[i, j - 2] == 4)
+                                            {
+                                                gameObject1.transform.localEulerAngles = new Vector3(0, 0, 270);
+                                                BTrue = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (i + 1 <= 28&& !BTrue)
+                    {
+                        if (ToTalMap[i + 1, j] == 4 || ToTalMap[i + 1, j] == 3)
+                        {
+                            if (j - 1 >= 0)
+                            {
+                                if (ToTalMap[i, j - 1] == 4 || ToTalMap[i , j-1] == 3)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 270);
+                                   
+                                }
+                            }
+                            if (j + 1 <= 27)
+                            {
+                                if (ToTalMap[i, j + 1] == 4 || ToTalMap[i, j+1] == 3)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 0);
+                                  
+                                }
+                            }
+
+                        }
+                    }
+                    
+                }
+                if (ToTalMap[i, j] == 4)
+                {
+                   
+                    if (j - 1 >= 0)
+                    {
+                        if (ToTalMap[i, j - 1] == 3 || ToTalMap[i, j - 1] == 4 || ToTalMap[i, j - 1] == 7)
+                        {
+
+
+                            gameObject1.transform.localEulerAngles = new Vector3(0, 0, 0);
+
+                        }
+                    }
+                    if (j + 1 <= 27)
+                    {
+                        if (ToTalMap[i, j + 1] == 4 || ToTalMap[i, j + 1] == 3 || ToTalMap[i, j + 1] == 7)
+                        {
+                            gameObject1.transform.localEulerAngles = new Vector3(0, 0, 0);
+                        }
+                    }
+                    if (i - 1 >= 0)
+                    {
+                        if (ToTalMap[i - 1, j] == 3 || ToTalMap[i - 1, j] == 4 || ToTalMap[i - 1, j] == 7)
+                        {
+                            if (i + 1 <= 28)
+                            {
+                                if (ToTalMap[i + 1, j] == 3 || ToTalMap[i + 1, j] == 4 || ToTalMap[i + 1, j] == 7)
+                                {
+                                    gameObject1.transform.localEulerAngles = new Vector3(0, 0, 90);
+                                }
+                            }
+
+
+
+                        }
+                    }
+                }
+                if (ToTalMap[i, j] == 7)
+                {
+                    if (i - 1 >= 0)
+                    {
+                        if (ToTalMap[i - 1, j] == 3 || ToTalMap[i - 1, j] == 4)
+                        {
+                            gameObject1.transform.localEulerAngles = new Vector3(0, 0, 90);
+                        }
+                    }
+                    if (i + 1 <= 27)
+                    {
+                        if (ToTalMap[i + 1, j] == 3 || ToTalMap[i + 1, j] == 4)
+                        {
+                            gameObject1.transform.localEulerAngles = new Vector3(0, 0, -90);
+                        }
+                    }
+                    if (j - 1 >= 0)
+                    {
+                        if (ToTalMap[i, j-1] == 3 || ToTalMap[i , j-1] == 4)
+                        {
+                            gameObject1.transform.localEulerAngles = new Vector3(0, 0, 180);
+                        }
+                    }
+                    if (j + 1 <= 27)
+                    {
+                        if (ToTalMap[i , j+1] == 3 || ToTalMap[i , j+1] == 4)
+                        {
+                            gameObject1.transform.localEulerAngles = new Vector3(0, 0, 0);
+                        }
+                    }
+
+                }
+                if (ToTalMap[i, j] == 6)
+                {
+                    gameObject1.transform.localScale = new Vector3(1, 1, 1);
+                    gameObject1.GetComponent<Animator>().enabled = true;
+                }
+                if (ToTalMap[i, j] == 5)
+                {
+                    gameObject1.transform.localScale = new Vector3(1, 1, 1);
+
+                }
+                if (ToTalMap[i, j] == 8)
+                {
+
+                    gameObject1.transform.localScale = new Vector3(1, 1, 1);
+                }
+            }
+        }
+
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-    private void EmptyGameObject()
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            Q[i] = new GameObject();
-            Q[i].transform.SetParent(this.transform);
-            Q[i].name = $"Quandrant {i + 1}";
-        }
-
-        Q[0].transform.position = new Vector3(3.55f, 4.5f, 0.0f);
-        Q[1].transform.position = new Vector3(-3.55f, 4.5f, 0.0f);
-        Q[2].transform.position = new Vector3(-3.55f, -4.5f, 0.0f);
-        Q[3].transform.position = new Vector3(3.55f, -4.5f, 0.0f);
-    }
-
-    private void Quadrants()
-    {
-        Quadrant2();
-
-        for (int i = 0; i < rows; i++)
-        {
-            for (int n = 0; n < columns; n++)
-            {
-                if (topLeft[i, n] != null)
-                {
-                    Quadrant1(i, n);
-                    Quadrant3(i, n);
-                    Quadrant4(i, n);
-                }
-            }
-        }
-    }
-
-    private void Quadrant1(int i, int n)
-    {
-        topRight[i, n] = Instantiate(topLeft[i, n], new Vector3(-topLeft[i, n].transform.position.x, topLeft[i, n].transform.position.y, 0), Quaternion.Euler(topLeft[i, n].transform.rotation.x, 180.0f, topLeft[i, n].transform.rotation.eulerAngles.z));
-        topRight[i, n].transform.SetParent(Q[0].transform);
-    }
-    private void Quadrant2()
-    {
-        Line1();
-        Line2();
-        for (int i = 0; i < rows; i++)
-        {
-            for (int n = 0; n < columns; n++)
-            {
-                if (topLeft[i, n] != null)
-                {
-                    topLeft[i, n].transform.SetParent(Q[1].transform);
-                }
-            }
-        }
-    }
-    private void Quadrant3(int i, int n)
-    {
-        bottomLeft[i, n] = Instantiate(topLeft[i, n], new Vector3(topLeft[i, n].transform.position.x, -topLeft[i, n].transform.position.y, 0), Quaternion.Euler(180.0f, topLeft[i, n].transform.rotation.y, topLeft[i, n].transform.rotation.eulerAngles.z));
-        bottomLeft[i, n].transform.SetParent(Q[2].transform);
-    }
-    private void Quadrant4(int i, int n)
-    {
-        bottomRight[i, n] = Instantiate(topLeft[i, n], new Vector3(-topLeft[i, n].transform.position.x, -topLeft[i, n].transform.position.y, 0), Quaternion.Euler(180.0f, 180.0f, topLeft[i, n].transform.rotation.eulerAngles.z));
-        bottomRight[i, n].transform.SetParent(Q[3].transform);
-    }
-   
-
-    private void Line1()
-    {
-        topLeft[0, 0] = Instantiate(gameObjects[1], new Vector3(-13f, 13.5f, 0.0f), Quaternion.identity);
-
-        for (int i = 1; i < 10; i++)
-        {
-            topLeft[0, i] = Instantiate(gameObjects[2], new Vector3(i - 11.5f, 11.5f, 0.0f), Quaternion.identity);
-        }
-        topLeft[0, 13] = Instantiate(gameObjects[7], new Vector3(-1f, 11.5f, 0.0f), Quaternion.Euler(0.0f, 0.0f, 0.0f));
-    }
-
-    private void Line2()
-    {
-        topLeft[1, 0] = Instantiate(gameObjects[2], new Vector3(-10f, 10.0f, 0.0f), Quaternion.Euler(0.0f, 0.0f, 90.0f));
-        for (int i = 1; i < 10; i++)
-        {
-            topLeft[1, i] = Instantiate(gameObjects[5], new Vector3(i - 11.5f, 11.0f, 0.0f), Quaternion.identity);
-        }
-        topLeft[1, 13] = Instantiate(gameObjects[4], new Vector3(-0f, 10.0f, 0.0f), Quaternion.Euler(0.0f, 0.0f, 90.0f));
+        
     }
 }
-
-   
